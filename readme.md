@@ -24,6 +24,7 @@ exports.config = {
   // ...
   reporters: ['@danielgallo/wdio-teamcity-reporter'],
   reporterOptions: {
+    screenshotPath: 'temp/screenshots/', // optional
     captureStandardOutput: false, // optional
     flowId: true, // optional
     message: '[title]', // optional
@@ -33,7 +34,7 @@ exports.config = {
 ```
 
 
-### Screenshots
+## Screenshots
 
 You can capture one or more screenshots by calling `browser.takeScreenshot()` within the various hooks
 in your `wdio.conf.js` file, for example:
@@ -73,7 +74,7 @@ define a custom path by setting `screenshotPath` on the `reporterOptions` within
 Only screenshots using the `browser.takeScreenshot()` method within the hooks
 in `wdio.conf.js` are captured and reported to TeamCity.
 
-### reporterOptions
+## reporterOptions
 
 `reporterOptions` provide you a possibility to adjust reporter functionality.
 
