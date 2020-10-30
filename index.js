@@ -106,7 +106,9 @@ class WdioTeamcityReporter extends WdioReporter {
    * @param {TestStats} testStats
    */
   onTestEnd (testStats) {
-    if (testStats.state === 'skipped') return
+    if (testStats.state === 'skipped') {
+      return
+    }
     this._m('##teamcity[testFinished name=\'{name}\' duration=\'{ms}\' flowId=\'{id}\']', testStats)
   }
 
@@ -161,7 +163,11 @@ class WdioTeamcityReporter extends WdioReporter {
       streamData.push(null)
       streamData.pipe(fs.createWriteStream(filePath))
 
-      this._m(`##teamcity[testMetadata name=\'{name}\' type=\'image\' value=\'${filePath}\' flowId=\'{id}\']`, this.currentTestStats)
+      const screenshotDisplayName = `Screenshot ${this.iterator + 1}`
+
+      this._m(`##teamcity[testMetadata name='${screenshotDisplayName}' type='image' value='${fileName}' flowId='{id}']`, this.currentTestStats)
+
+      this.previousTestUid = this.currentTestStats.uid
     }
   }
 

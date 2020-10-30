@@ -1,6 +1,6 @@
 {
   "name": "@danielgallo/wdio-teamcity-reporter",
-  "version": "2.3.0",
+  "version": "2.3.3",
   "description": "WebdriverIO TeamCity reporter",
   "main": "index.js",
   "engines": {
@@ -28,7 +28,10 @@
     "url": "https://github.com/DanielGallo/wdio-teamcity-reporter/issues"
   },
   "homepage": "https://github.com/DanielGallo/wdio-teamcity-reporter",
-  "dependencies": {},
+  "dependencies": {
+    "shelljs": "^0.8.4",
+    "uuid": "^8.3.1"
+  },
   "devDependencies": {
     "@wdio/cli": "^6.1.20",
     "@wdio/devtools-service": "^6.1.20",
@@ -38,9 +41,7 @@
     "@wdio/selenium-standalone-service": "^6.1.14",
     "@wdio/sync": "^6.1.14",
     "standard": "^14.3.1",
-    "tape": "^4.6.0",
-    "shelljs": "^0.8.4",
-    "uuid": "^8.3.1"
+    "tape": "^4.6.0"
   },
   "peerDependencies": {
     "@wdio/cli": "^5.0.0"
