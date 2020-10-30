@@ -2,6 +2,10 @@
 
 const WdioReporter = require('@wdio/reporter').default
 const assert = require('assert')
+const fs = require('fs')
+const Readable = require('stream').Readable
+const { v4: uuid } = require('uuid')
+const shell = require('shelljs')
 
 /**
  * @typedef {Object} SuiteStats
@@ -73,6 +77,14 @@ class WdioTeamcityReporter extends WdioReporter {
     const options = Object.assign(reporterOptions, params)
 
     super(options)
+
+    const path = process.cwd()
+
+    shell.mkdir('-p', `${path}/build/screenshots`)
+
+    this.currentTestStats = null
+    this.previousTestUid = null
+    this.iterator = 0
   }
 
   /**
@@ -86,6 +98,7 @@ class WdioTeamcityReporter extends WdioReporter {
    * @param {TestStats} testStats
    */
   onTestStart (testStats) {
+    this.currentTestStats = testStats
     this._m('##teamcity[testStarted name=\'{name}\' captureStandardOutput=\'{capture}\' flowId=\'{id}\']', testStats)
   }
 
@@ -107,7 +120,6 @@ class WdioTeamcityReporter extends WdioReporter {
     const attempt = escape(`${specFileRetryAttempts}/${specFileRetries}`)
 
     if (specFileRetryAttempts === specFileRetries) {
-      // ##teamcity[testFailed type='comparisonFailure' name='test2' message='failure message' details='message and stack trace' expected='expected value' actual='actual value']
       this._m('##teamcity[testFailed name=\'{name}\' message=\'{error}\' details=\'{stack}\' flowId=\'{id}\']', testStats)
     } else {
       this._m(`##teamcity[message name='{name}' text='attempt ${attempt} failed: {error}' flowId='{id}']`, testStats)
@@ -126,6 +138,31 @@ class WdioTeamcityReporter extends WdioReporter {
    */
   onSuiteEnd (suiteStats) {
     this._m('##teamcity[testSuiteFinished name=\'{name}\' flowId=\'{id}\']', suiteStats)
+  }
+
+  onAfterCommand (command) {
+    const screenshotRegEx = /\/session\/[^/]*\/screenshot/
+
+    // If this is a screenshot command and there is an associated value (the screenshot data)
+    if (screenshotRegEx.test(command.endpoint) && command.result.value) {
+      // Save screenshot to path (TODO: allow path to be defined in initial config)
+      if (this.currentTestStats.uid === this.previousTestUid) {
+        this.iterator++
+      } else {
+        this.iterator = 0
+      }
+
+      const uuidFilename = uuid()
+      const bufferData = Buffer.from(command.result.value, 'base64')
+      const streamData = new Readable()
+      const fileName = `${this.iterator}-${uuidFilename}.png`
+      const filePath = `build/screenshots/${fileName}`
+      streamData.push(bufferData)
+      streamData.push(null)
+      streamData.pipe(fs.createWriteStream(filePath))
+
+      this._m(`##teamcity[testMetadata name=\'{name}\' type=\'image\' value=\'${filePath}\' flowId=\'{id}\']`, this.currentTestStats)
+    }
   }
 
   /**

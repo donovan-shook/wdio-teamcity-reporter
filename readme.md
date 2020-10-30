@@ -1,13 +1,15 @@
 wdio-teamcity-reporter
 ======================
 
-WebdriverIO Teamcity reporter which makes it possible to display test results in real-time, makes test information available on the Tests tab of the Build Results page.
+WebdriverIO TeamCity reporter based on https://github.com/sullenor/wdio-teamcity-reporter, which makes it possible to display test results
+in real-time, makes test information available on the Tests tab of the Build Results page.
 
+This version incorporates screenshot reporting.
 
 ## Installation
 
 ```bash
-npm install wdio-teamcity-reporter --save-dev
+npm install @danielgallo/wdio-teamcity-reporter --save-dev
 ```
 
 Instructions on how to install WebdriverIO can be found here: http://webdriver.io/guide/getstarted/install.html
@@ -41,8 +43,7 @@ exports.config = {
 
 ## Links
 
-- Reference to the Teamcity documentation about reporting messages: https://confluence.jetbrains.com/display/TCD65/Build+Script+Interaction+with+TeamCity
-- Teamcity testdrive: https://blog.jetbrains.com/teamcity/2019/08/getting-started-with-teamcity-testdrive/
+- Reference to the TeamCity documentation about reporting messages: https://www.jetbrains.com/help/teamcity/reporting-test-metadata.html#Displaying+additional+test+data
 
 
 ## License

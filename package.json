@@ -1,7 +1,7 @@
 {
-  "name": "wdio-teamcity-reporter",
-  "version": "2.2.0",
-  "description": "WebdriverIO Teamcity reporter",
+  "name": "@danielgallo/wdio-teamcity-reporter",
+  "version": "2.3.0",
+  "description": "WebdriverIO TeamCity reporter",
   "main": "index.js",
   "engines": {
     "node": ">=8.11.0"
@@ -13,17 +13,21 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sullenor/wdio-teamcity-reporter.git"
+    "url": "git+https://github.com/DanielGallo/wdio-teamcity-reporter.git"
   },
   "keywords": [
-    "teamcity"
+    "teamcity",
+    "wdio",
+    "webdriverio",
+    "screenshot",
+    "reporter"
   ],
-  "author": "Alexey Litvinov",
+  "author": "Daniel Gallo",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/sullenor/wdio-teamcity-reporter/issues"
+    "url": "https://github.com/DanielGallo/wdio-teamcity-reporter/issues"
   },
-  "homepage": "https://github.com/sullenor/wdio-teamcity-reporter#readme",
+  "homepage": "https://github.com/DanielGallo/wdio-teamcity-reporter",
   "dependencies": {},
   "devDependencies": {
     "@wdio/cli": "^6.1.20",
@@ -34,7 +38,9 @@
     "@wdio/selenium-standalone-service": "^6.1.14",
     "@wdio/sync": "^6.1.14",
     "standard": "^14.3.1",
-    "tape": "^4.6.0"
+    "tape": "^4.6.0",
+    "shelljs": "^0.8.4",
+    "uuid": "^8.3.1"
   },
   "peerDependencies": {
     "@wdio/cli": "^5.0.0"
