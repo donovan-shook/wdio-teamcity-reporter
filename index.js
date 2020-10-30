@@ -3,6 +3,7 @@
 const WdioReporter = require('@wdio/reporter').default
 const assert = require('assert')
 const fs = require('fs')
+const path = require('path')
 const Readable = require('stream').Readable
 const { v4: uuid } = require('uuid')
 const shell = require('shelljs')
@@ -71,6 +72,7 @@ class WdioTeamcityReporter extends WdioReporter {
       captureStandardOutput: r.bool(reporterOptions.captureStandardOutput, false),
       flowId: r.bool(reporterOptions.flowId, true),
       message: r.string(reporterOptions.message, '[title]'),
+      screenshotPath: r.string(reporterOptions.screenshotPath, 'temp/screenshots/'),
       stdout: true,
       writeStream: process.stdout
     }
@@ -78,10 +80,11 @@ class WdioTeamcityReporter extends WdioReporter {
 
     super(options)
 
-    const path = process.cwd()
+    const folderPath = path.join(process.cwd(), params.screenshotPath)
 
-    shell.mkdir('-p', `${path}/build/screenshots`)
+    shell.mkdir('-p', folderPath)
 
+    this.fullScreenshotPath = folderPath
     this.currentTestStats = null
     this.previousTestUid = null
     this.iterator = 0
@@ -99,6 +102,7 @@ class WdioTeamcityReporter extends WdioReporter {
    */
   onTestStart (testStats) {
     this.currentTestStats = testStats
+
     this._m('##teamcity[testStarted name=\'{name}\' captureStandardOutput=\'{capture}\' flowId=\'{id}\']', testStats)
   }
 
@@ -158,7 +162,7 @@ class WdioTeamcityReporter extends WdioReporter {
       const bufferData = Buffer.from(command.result.value, 'base64')
       const streamData = new Readable()
       const fileName = `${this.iterator}-${uuidFilename}.png`
-      const filePath = `build/screenshots/${fileName}`
+      const filePath = path.join(this.fullScreenshotPath, fileName)
       streamData.push(bufferData)
       streamData.push(null)
       streamData.pipe(fs.createWriteStream(filePath))
