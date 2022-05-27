@@ -1,5 +1,5 @@
 {
-  "name": "@sstid/wdio-teamcity-reporter",
+  "name": "wdio-sstid-teamcity-reporter",
   "version": "1.0.0",
   "description": "WebdriverIO TeamCity reporter",
   "main": "index.js",
